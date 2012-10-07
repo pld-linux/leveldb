@@ -1,4 +1,3 @@
-# $Revision: 1.21 $, $Date: 2011/07/16 18:25:43 $
 Summary:	LevelDB - key-value store library
 Summary(pl.UTF-8):	LevelDB - biblioteka bazy danych klucz-wartość
 Name:		leveldb
