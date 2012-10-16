@@ -8,6 +8,7 @@ Group:		Libraries
 #Source0Download: http://code.google.com/p/leveldb/downloads/list
 Source0:	http://leveldb.googlecode.com/files/%{name}-%{version}.tar.gz
 # Source0-md5:	d0b73edbb86996d58b073bba6b206295
+Patch0:		%{name}-soname.patch
 URL:		http://code.google.com/p/leveldb/
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtcmalloc-devel
@@ -52,6 +53,7 @@ Statyczna biblioteka LevelDB.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %{__make} \
