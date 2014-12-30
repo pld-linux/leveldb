@@ -37,7 +37,7 @@ Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki LevelDB
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	libstdc++-devel
-Requires:	libtcmalloc-devel
+%{?with_tcmalloc:Requires:	libtcmalloc-devel}
 Requires:	snappy-devel
 
 %description devel
