@@ -1,3 +1,11 @@
+#
+# Conditional build:
+%bcond_without	tcmalloc	# don't use tcmalloc
+
+%ifarch x32
+%undefine	with_tcmalloc
+%endif
+
 Summary:	LevelDB - key-value store library
 Summary(pl.UTF-8):	LevelDB - biblioteka bazy danych klucz-wartość
 Name:		leveldb
@@ -10,7 +18,7 @@ Source0:	http://leveldb.googlecode.com/files/%{name}-%{version}.tar.gz
 # Source0-md5:	e91fd7cbced8b84e21f357a866ad226a
 URL:		http://code.google.com/p/leveldb/
 BuildRequires:	libstdc++-devel
-BuildRequires:	libtcmalloc-devel
+%{?with_tcmalloc:BuildRequires:	libtcmalloc-devel}
 BuildRequires:	snappy-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
