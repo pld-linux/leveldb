@@ -1,6 +1,7 @@
 #
 # Conditional build:
 %bcond_without	tcmalloc	# don't use tcmalloc
+%bcond_without	tests		# build without tests
 
 %ifarch x32
 %undefine	with_tcmalloc
@@ -64,6 +65,12 @@ Statyczna biblioteka LevelDB.
 %{__make} \
 	CXX="%{__cxx}" \
 	OPT="%{rpmcflags} %{!?debug:-DNDEBUG}"
+
+%if %{with tests}
+%{__make} check \
+	CXX="%{__cxx}" \
+	OPT="%{rpmcflags} %{!?debug:-DNDEBUG}"
+%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
