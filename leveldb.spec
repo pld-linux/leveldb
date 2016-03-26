@@ -9,14 +9,13 @@
 Summary:	LevelDB - key-value store library
 Summary(pl.UTF-8):	LevelDB - biblioteka bazy danych klucz-wartość
 Name:		leveldb
-Version:	1.15.0
-Release:	3
+Version:	1.18
+Release:	1
 License:	BSD
 Group:		Libraries
-#Source0Download: http://code.google.com/p/leveldb/downloads/list
-Source0:	http://leveldb.googlecode.com/files/%{name}-%{version}.tar.gz
-# Source0-md5:	e91fd7cbced8b84e21f357a866ad226a
-URL:		http://code.google.com/p/leveldb/
+Source0:	https://github.com/google/leveldb/archive/v%{version}/%{name}-%{version}.tar.gz
+# Source0-md5:	73770de34a2a5ab34498d2e05b2b7fa0
+URL:		https://github.com/google/leveldb
 BuildRequires:	libstdc++-devel
 %{?with_tcmalloc:BuildRequires:	libtcmalloc-devel}
 BuildRequires:	snappy-devel
@@ -37,7 +36,7 @@ Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki LevelDB
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	libstdc++-devel
-%{?with_tcmalloc:Requires:	libtcmalloc-devel}
+%{?with_tcmalloc:Requires: libtcmalloc-devel}
 Requires:	snappy-devel
 
 %description devel
