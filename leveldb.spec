@@ -10,12 +10,13 @@
 Summary:	LevelDB - key-value store library
 Summary(pl.UTF-8):	LevelDB - biblioteka bazy danych klucz-wartość
 Name:		leveldb
-Version:	1.18
+Version:	1.19
 Release:	1
 License:	BSD
 Group:		Libraries
+#Source0Download: https://github.com/google/leveldb/releases
 Source0:	https://github.com/google/leveldb/archive/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	73770de34a2a5ab34498d2e05b2b7fa0
+# Source0-md5:	6c201409cce6b711f46d68e0f4b1090a
 URL:		https://github.com/google/leveldb
 BuildRequires:	libstdc++-devel
 %{?with_tcmalloc:BuildRequires:	libtcmalloc-devel}
@@ -76,7 +77,8 @@ Statyczna biblioteka LevelDB.
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_libdir},%{_includedir}}
 
-cp -dp libleveldb.so* libleveldb.a $RPM_BUILD_ROOT%{_libdir}
+cp -dp out-shared/libleveldb.so* $RPM_BUILD_ROOT%{_libdir}
+cp -p out-static/libleveldb.a $RPM_BUILD_ROOT%{_libdir}
 cp -a include/leveldb $RPM_BUILD_ROOT%{_includedir}
 
 %clean
@@ -87,7 +89,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS LICENSE NEWS README TODO
+%doc AUTHORS LICENSE NEWS README.md TODO
 %attr(755,root,root) %{_libdir}/libleveldb.so.*.*
 %attr(755,root,root) %ghost %{_libdir}/libleveldb.so.1
 
