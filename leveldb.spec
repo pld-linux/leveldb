@@ -10,13 +10,13 @@
 Summary:	LevelDB - key-value store library
 Summary(pl.UTF-8):	LevelDB - biblioteka bazy danych klucz-wartość
 Name:		leveldb
-Version:	1.19
+Version:	1.20
 Release:	1
 License:	BSD
 Group:		Libraries
 #Source0Download: https://github.com/google/leveldb/releases
 Source0:	https://github.com/google/leveldb/archive/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	6c201409cce6b711f46d68e0f4b1090a
+# Source0-md5:	298b5bddf12c675d6345784261302252
 URL:		https://github.com/google/leveldb
 BuildRequires:	libstdc++-devel
 %{?with_tcmalloc:BuildRequires:	libtcmalloc-devel}
