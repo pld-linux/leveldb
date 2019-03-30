@@ -1,0 +1,10 @@
+--- leveldb-1.21/CMakeLists.txt.orig	2019-03-29 22:37:39.000000000 +0100
++++ leveldb-1.21/CMakeLists.txt	2019-03-30 21:39:02.866319971 +0100
+@@ -95,6 +95,7 @@
+ endif(BUILD_SHARED_LIBS)
+ 
+ add_library(leveldb "")
++set_target_properties(leveldb PROPERTIES SOVERSION 1 VERSION 1.21)
+ target_sources(leveldb
+   PRIVATE
+     "${PROJECT_BINARY_DIR}/${LEVELDB_PORT_CONFIG_DIR}/port_config.h"

@@ -1,24 +1,26 @@
 #
 # Conditional build:
-%bcond_without	tcmalloc	# don't use tcmalloc
-%bcond_without	tests		# build without tests
+%bcond_without	static_libs	# static library
+%bcond_without	tcmalloc	# tcmalloc usage
+%bcond_without	tests		# unit tests
 
 %ifarch x32
 %undefine	with_tcmalloc
 %endif
-
 Summary:	LevelDB - key-value store library
 Summary(pl.UTF-8):	LevelDB - biblioteka bazy danych klucz-wartość
 Name:		leveldb
-Version:	1.20
+Version:	1.21
 Release:	1
 License:	BSD
 Group:		Libraries
 #Source0Download: https://github.com/google/leveldb/releases
-Source0:	https://github.com/google/leveldb/archive/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	298b5bddf12c675d6345784261302252
+Source0:	https://github.com/google/leveldb/archive/%{version}/%{name}-%{version}.tar.gz
+# Source0-md5:	11609dcd141584a784d879d3879f36b7
+Patch0:		%{name}-soname.patch
 URL:		https://github.com/google/leveldb
-BuildRequires:	libstdc++-devel
+BuildRequires:	cmake >= 3.9
+BuildRequires:	libstdc++-devel >= 6:4.7
 %{?with_tcmalloc:BuildRequires:	libtcmalloc-devel}
 BuildRequires:	snappy-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -37,7 +39,7 @@ Summary:	Header files for LevelDB library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki LevelDB
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	libstdc++-devel
+Requires:	libstdc++-devel >= 6:4.7
 %{?with_tcmalloc:Requires: libtcmalloc-devel}
 Requires:	snappy-devel
 
@@ -61,25 +63,39 @@ Statyczna biblioteka LevelDB.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
-%{__make} \
-	CXX="%{__cxx}" \
-	OPT="%{rpmcflags} %{!?debug:-DNDEBUG}"
+%if %{with static_libs}
+install -d build-static
+cd build-static
+%cmake .. \
+	-DBUILD_SHARED_LIBS:BOOL=OFF
+
+%{__make}
+cd ..
+%endif
+
+install -d build
+cd build
+%cmake ..
+
+%{__make}
 
 %if %{with tests}
-%{__make} check \
-	CXX="%{__cxx}" \
-	OPT="%{rpmcflags} %{!?debug:-DNDEBUG}"
+ctest
 %endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_libdir},%{_includedir}}
 
-cp -dp out-shared/libleveldb.so* $RPM_BUILD_ROOT%{_libdir}
-cp -p out-static/libleveldb.a $RPM_BUILD_ROOT%{_libdir}
-cp -a include/leveldb $RPM_BUILD_ROOT%{_includedir}
+%if %{with static_libs}
+%{__make} -C build-static install \
+	DESTDIR=$RPM_BUILD_ROOT
+%endif
+
+%{__make} -C build install \
+	DESTDIR=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -98,7 +114,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc doc/*
 %attr(755,root,root) %{_libdir}/libleveldb.so
 %{_includedir}/leveldb
+%{_libdir}/cmake/leveldb
 
+%if %{with static_libs}
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/libleveldb.a
+%endif
