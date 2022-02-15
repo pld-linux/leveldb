@@ -10,19 +10,23 @@
 Summary:	LevelDB - key-value store library
 Summary(pl.UTF-8):	LevelDB - biblioteka bazy danych klucz-wartość
 Name:		leveldb
-Version:	1.22
+Version:	1.23
 Release:	1
 License:	BSD
 Group:		Libraries
 #Source0Download: https://github.com/google/leveldb/releases
 Source0:	https://github.com/google/leveldb/archive/%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	e1dbde14dcda1b58b49f0c214464fdd9
-Patch0:		%{name}-soname.patch
+# Source0-md5:	afbde776fb8760312009963f09a586c7
+Patch0:		%{name}-system-libs.patch
 URL:		https://github.com/google/leveldb
 BuildRequires:	cmake >= 3.9
+%{?with_tests:BuildRequires:	gmock-devel}
+%{?with_tests:BuildRequires:	google-benchmark-devel}
+%{?with_tests:BuildRequires:	gtest-devel}
 BuildRequires:	libstdc++-devel >= 6:4.7
 %{?with_tcmalloc:BuildRequires:	libtcmalloc-devel}
 BuildRequires:	snappy-devel
+# sqlite3-devel kyotocabinet-devel for benchmarks
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -70,7 +74,9 @@ Statyczna biblioteka LevelDB.
 install -d build-static
 cd build-static
 %cmake .. \
-	-DBUILD_SHARED_LIBS:BOOL=OFF
+	-DBUILD_SHARED_LIBS:BOOL=OFF \
+	%{!?with_tests:-DLEVELDB_BUILD_TESTS:BOOL=OFF} \
+	-DLEVELDB_BUILD_BENCHMARKS:BOOL=OFF
 
 %{__make}
 cd ..
@@ -78,7 +84,9 @@ cd ..
 
 install -d build
 cd build
-%cmake ..
+%cmake .. \
+	%{!?with_tests:-DLEVELDB_BUILD_TESTS:BOOL=OFF} \
+	-DLEVELDB_BUILD_BENCHMARKS:BOOL=OFF
 
 %{__make}
 
