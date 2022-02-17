@@ -11,13 +11,14 @@ Summary:	LevelDB - key-value store library
 Summary(pl.UTF-8):	LevelDB - biblioteka bazy danych klucz-wartość
 Name:		leveldb
 Version:	1.23
-Release:	1
+Release:	2
 License:	BSD
 Group:		Libraries
 #Source0Download: https://github.com/google/leveldb/releases
 Source0:	https://github.com/google/leveldb/archive/%{version}/%{name}-%{version}.tar.gz
 # Source0-md5:	afbde776fb8760312009963f09a586c7
 Patch0:		%{name}-system-libs.patch
+Patch1:		%{name}-rtti.patch
 URL:		https://github.com/google/leveldb
 BuildRequires:	cmake >= 3.9
 %{?with_tests:BuildRequires:	gmock-devel}
@@ -68,6 +69,7 @@ Statyczna biblioteka LevelDB.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %build
 %if %{with static_libs}

@@ -1,0 +1,13 @@
+--- leveldb-1.23/CMakeLists.txt.orig	2022-02-17 16:24:38.753446617 +0100
++++ leveldb-1.23/CMakeLists.txt	2022-02-17 16:30:35.698510965 +0100
+@@ -70,10 +70,6 @@ else(CMAKE_CXX_COMPILER_ID STREQUAL "MSV
+   # Disable C++ exceptions.
+   string(REGEX REPLACE "-fexceptions" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-exceptions")
+-
+-  # Disable RTTI.
+-  string(REGEX REPLACE "-frtti" "" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-rtti")
+ endif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+ 
+ # Test whether -Wthread-safety is available. See
